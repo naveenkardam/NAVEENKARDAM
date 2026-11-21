@@ -1,0 +1,2611 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NAVEEN KARDAM — Create. Innovate. Dominate. | Creative Studio</title>
+  <meta name="description" content="Official Creative Studio of Naveen Kardam — Digital Creator, Video Editor, Web & App Developer, and Creative Designer. Turning ideas into digital reality." />
+  <meta name="theme-color" content="#060608" />
+  <meta property="og:title" content="NAVEEN KARDAM — Official Creative Studio" />
+  <meta property="og:description" content="Create. Innovate. Dominate. Creative video editing, modern websites, apps, and visual design." />
+  <meta property="og:type" content="website" />
+
+  <!-- Official Supabase JS SDK v2 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Modern Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-deep: #060608;
+      --bg-surface: #0e0e13;
+      --bg-card: rgba(18, 18, 25, 0.72);
+      --bg-card-solid: #121219;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(249, 115, 22, 0.38);
+      --text-primary: #f8fafc;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+      --red: #e11d48;
+      --orange: #f97316;
+      --gradient-brand: linear-gradient(135deg, #e11d48 0%, #f97316 100%);
+      --gradient-soft: linear-gradient(135deg, rgba(225, 29, 72, 0.16) 0%, rgba(249, 115, 22, 0.14) 100%);
+      --shadow-glow: 0 12px 40px -10px rgba(225, 29, 72, 0.32), 0 4px 20px -6px rgba(249, 115, 22, 0.25);
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+      --font-display: 'Syne', system-ui, -apple-system, sans-serif;
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+      --transition: 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-deep);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--bg-deep);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+      color: inherit;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Ambient Background */
+    .ambient-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .ambient-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 20%, #000 35%, transparent 100%);
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(110px);
+      opacity: 0.38;
+      animation: floatOrb 18s ease-in-out infinite alternate;
+    }
+
+    .orb-1 {
+      width: 520px;
+      height: 520px;
+      background: radial-gradient(circle, rgba(225, 29, 72, 0.55), transparent 70%);
+      top: -140px;
+      left: -100px;
+    }
+
+    .orb-2 {
+      width: 480px;
+      height: 480px;
+      background: radial-gradient(circle, rgba(249, 115, 22, 0.45), transparent 70%);
+      top: 15%;
+      right: -120px;
+      animation-delay: -6s;
+    }
+
+    .orb-3 {
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle, rgba(225, 29, 72, 0.3), transparent 70%);
+      bottom: 8%;
+      left: 25%;
+      animation-delay: -11s;
+    }
+
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(40px, 35px) scale(1.08); }
+    }
+
+    /* Typography & Helpers */
+    .gradient-text {
+      background: var(--gradient-brand);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section {
+      padding: 104px 0;
+      position: relative;
+    }
+
+    .section-header {
+      max-width: 720px;
+      margin-bottom: 56px;
+    }
+
+    .section-header.center {
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #fdba74;
+      margin-bottom: 18px;
+    }
+
+    .eyebrow-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--gradient-brand);
+      box-shadow: 0 0 10px var(--orange);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.1rem);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .section-subtitle {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 13px 26px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.94rem;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: transform var(--transition), box-shadow var(--transition), background var(--transition), border-color var(--transition);
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--gradient-brand);
+      color: #ffffff;
+      box-shadow: var(--shadow-glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 46px -8px rgba(225, 29, 72, 0.5), 0 6px 24px -6px rgba(249, 115, 22, 0.4);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-primary);
+      border-color: rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(12px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(249, 115, 22, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .btn-sm {
+      padding: 10px 18px;
+      font-size: 0.86rem;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Glass Card */
+    .glass-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+    }
+
+    .glass-card:hover {
+      border-color: rgba(249, 115, 22, 0.32);
+      box-shadow: 0 20px 50px -24px rgba(225, 29, 72, 0.25);
+    }
+
+    /* Navbar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(6, 6, 8, 0.78);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      transition: background var(--transition);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 78px;
+      gap: 20px;
+    }
+
+    .brand-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: 0.04em;
+    }
+
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--gradient-brand);
+      display: grid;
+      place-items: center;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(225, 29, 72, 0.35);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: color var(--transition);
+      position: relative;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--text-primary);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 0;
+      height: 2px;
+      background: var(--gradient-brand);
+      transition: width var(--transition);
+      border-radius: 2px;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hamburger {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(255, 255, 255, 0.04);
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 78px;
+      left: 0;
+      right: 0;
+      background: rgba(9, 9, 13, 0.97);
+      backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 24px;
+      z-index: 99;
+    }
+
+    .mobile-menu.open {
+      display: block;
+    }
+
+    .mobile-menu ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .mobile-menu a {
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      display: block;
+      padding: 6px 0;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 84px 0 96px;
+      min-height: calc(100vh - 78px);
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .hero-tagline-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .hero-alt-badge {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.55rem, 5.4vw, 4.35rem);
+      font-weight: 800;
+      line-height: 1.04;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+
+    .hero-roles {
+      font-size: clamp(1rem, 1.5vw, 1.18rem);
+      font-weight: 600;
+      color: #fed7aa;
+      margin-bottom: 18px;
+      letter-spacing: 0.01em;
+    }
+
+    .hero-desc {
+      color: var(--text-secondary);
+      font-size: 1.06rem;
+      max-width: 600px;
+      margin-bottom: 34px;
+      line-height: 1.75;
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 38px;
+    }
+
+    .hero-meta-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
+      padding-top: 26px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .meta-item strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      color: var(--text-primary);
+    }
+
+    .meta-item span {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+    }
+
+    /* Portrait Frame */
+    .portrait-wrap {
+      position: relative;
+      max-width: 440px;
+      margin: 0 auto;
+    }
+
+    .portrait-glow {
+      position: absolute;
+      inset: -16px;
+      border-radius: 32px;
+      background: var(--gradient-brand);
+      opacity: 0.22;
+      filter: blur(36px);
+      z-index: 0;
+    }
+
+    .portrait-card {
+      position: relative;
+      z-index: 1;
+      border-radius: 28px;
+      padding: 14px;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(20px);
+    }
+
+    .portrait-frame {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      border-radius: 20px;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 25%, rgba(249, 115, 22, 0.2), rgba(14, 14, 19, 0.96) 72%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .portrait-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .portrait-placeholder {
+      text-align: center;
+      padding: 32px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .portrait-monogram {
+      width: 112px;
+      height: 112px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(225, 29, 72, 0.24), rgba(249, 115, 22, 0.2));
+      border: 1px solid rgba(249, 115, 22, 0.45);
+      display: grid;
+      place-items: center;
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #fff;
+      box-shadow: 0 0 40px rgba(225, 29, 72, 0.25);
+    }
+
+    .portrait-placeholder h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      letter-spacing: 0.06em;
+    }
+
+    .portrait-placeholder p {
+      font-size: 0.84rem;
+      color: var(--text-secondary);
+      max-width: 240px;
+    }
+
+    .portrait-floating-badge {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      right: 24px;
+      padding: 14px 18px;
+      border-radius: 14px;
+      background: rgba(8, 8, 12, 0.86);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .portrait-floating-badge strong {
+      display: block;
+      font-size: 0.88rem;
+      font-family: var(--font-display);
+    }
+
+    .portrait-floating-badge span {
+      font-size: 0.76rem;
+      color: var(--text-secondary);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: #4ade80;
+      background: rgba(74, 222, 128, 0.1);
+      border: 1px solid rgba(74, 222, 128, 0.25);
+      padding: 4px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    /* About Section */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .about-copy p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      margin-bottom: 18px;
+      line-height: 1.8;
+    }
+
+    .about-cards {
+      display: grid;
+      gap: 18px;
+    }
+
+    .highlight-card {
+      padding: 24px;
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    .highlight-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .icon-box {
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      border-radius: 14px;
+      background: var(--gradient-soft);
+      border: 1px solid rgba(249, 115, 22, 0.3);
+      display: grid;
+      place-items: center;
+      color: #fb923c;
+    }
+
+    .highlight-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      margin-bottom: 6px;
+    }
+
+    .highlight-card p {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+    }
+
+    /* Services */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .service-card {
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .service-num {
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: #fb923c;
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .service-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .service-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.32rem;
+      margin-bottom: 16px;
+    }
+
+    .service-list {
+      list-style: none;
+      display: grid;
+      gap: 9px;
+      margin-bottom: 26px;
+    }
+
+    .service-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.91rem;
+      color: var(--text-secondary);
+    }
+
+    .service-list li::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      min-width: 6px;
+      border-radius: 50%;
+      background: var(--gradient-brand);
+    }
+
+    .service-card .btn {
+      width: 100%;
+    }
+
+    /* Portfolio */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 36px;
+    }
+
+    .filter-btn {
+      padding: 9px 18px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .filter-btn:hover {
+      border-color: rgba(249, 115, 22, 0.4);
+      color: var(--text-primary);
+    }
+
+    .filter-btn.active {
+      background: var(--gradient-brand);
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 8px 24px -6px rgba(225, 29, 72, 0.45);
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .project-card {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .project-thumb {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      background: linear-gradient(135deg, #161620 0%, #0b0b10 100%);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .project-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .project-card:hover .project-thumb img {
+      transform: scale(1.05);
+    }
+
+    .thumb-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 20px;
+      text-align: center;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(225, 29, 72, 0.2), transparent 60%),
+        radial-gradient(circle at 75% 75%, rgba(249, 115, 22, 0.16), transparent 55%),
+        #101016;
+    }
+
+    .thumb-badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      padding: 4px 11px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      background: rgba(6, 6, 8, 0.8);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fdba74;
+    }
+
+    .project-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .project-cat {
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #fb923c;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .project-body h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+    }
+
+    .project-body p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .portfolio-note {
+      margin-top: 24px;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* Collaboration Banner */
+    .collab-box {
+      padding: 56px;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 90% 10%, rgba(249, 115, 22, 0.2), transparent 45%),
+        radial-gradient(circle at 10% 90%, rgba(225, 29, 72, 0.22), transparent 45%),
+        rgba(16, 16, 22, 0.86);
+    }
+
+    .collab-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .collab-tags {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .collab-tag {
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+
+    .collab-tag:hover {
+      border-color: rgba(249, 115, 22, 0.45);
+      transform: translateY(-2px);
+    }
+
+    .collab-tag span.dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--gradient-brand);
+    }
+
+    /* Why Work With Me */
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 22px;
+    }
+
+    .why-card {
+      padding: 28px 24px;
+    }
+
+    .why-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .why-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.12rem;
+      margin: 18px 0 8px;
+    }
+
+    .why-card p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    /* Social Media Hub */
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .social-card {
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .social-card.is-link:hover {
+      transform: translateY(-5px) scale(1.01);
+      border-color: rgba(249, 115, 22, 0.55);
+      box-shadow: 0 18px 42px -18px rgba(225, 29, 72, 0.45);
+    }
+
+    .social-card.is-placeholder {
+      opacity: 0.85;
+    }
+
+    .social-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .social-icon {
+      width: 50px;
+      height: 50px;
+      min-width: 50px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: grid;
+      place-items: center;
+      transition: background var(--transition), transform var(--transition);
+    }
+
+    .social-card.is-link:hover .social-icon {
+      background: var(--gradient-brand);
+      border-color: transparent;
+      transform: rotate(-4deg) scale(1.06);
+      color: #fff;
+    }
+
+    .social-info h3 {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      margin-bottom: 2px;
+    }
+
+    .social-handle {
+      font-size: 0.86rem;
+      color: var(--text-secondary);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .social-badge {
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      white-space: nowrap;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-secondary);
+    }
+
+    .social-badge.soon {
+      color: #fdba74;
+      border-color: rgba(249, 115, 22, 0.35);
+      background: rgba(249, 115, 22, 0.1);
+    }
+
+    /* Contact & Inquiry Section */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 0.88fr 1.12fr;
+      gap: 36px;
+      align-items: start;
+    }
+
+    .contact-panel {
+      padding: 32px;
+      display: grid;
+      gap: 24px;
+    }
+
+    .direct-email-box {
+      padding: 20px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .direct-email-box label {
+      display: block;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .email-link {
+      font-family: var(--font-display);
+      font-size: 1.08rem;
+      font-weight: 700;
+      word-break: break-all;
+      color: #fdba74;
+    }
+
+    .email-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .form-card {
+      padding: 34px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 13px 15px;
+      border-radius: var(--radius-sm);
+      background: rgba(8, 8, 12, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      color: var(--text-primary);
+      font-size: 0.94rem;
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+
+    .form-control:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.16);
+    }
+
+    textarea.form-control {
+      min-height: 132px;
+      resize: vertical;
+    }
+
+    .form-status {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-radius: var(--radius-md);
+      font-size: 0.92rem;
+      display: none;
+      line-height: 1.6;
+    }
+
+    .form-status.show {
+      display: block;
+    }
+
+    .form-status.success {
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      color: #bbf7d0;
+    }
+
+    .form-status.error {
+      background: rgba(225, 29, 72, 0.14);
+      border: 1px solid rgba(225, 29, 72, 0.4);
+      color: #fecdd3;
+    }
+
+    .form-status.warning {
+      background: rgba(249, 115, 22, 0.12);
+      border: 1px solid rgba(249, 115, 22, 0.4);
+      color: #fed7aa;
+    }
+
+    .fallback-actions {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+      padding: 64px 0 34px;
+      background: rgba(6, 6, 8, 0.9);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+
+    .footer-tagline {
+      color: var(--text-secondary);
+      margin-top: 14px;
+      max-width: 320px;
+      font-size: 0.95rem;
+    }
+
+    .footer-heading {
+      font-family: var(--font-display);
+      font-size: 0.92rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+      color: var(--text-primary);
+    }
+
+    .footer-links {
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .footer-links a,
+    .footer-links button {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      text-align: left;
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      transition: color var(--transition);
+    }
+
+    .footer-links a:hover,
+    .footer-links button:hover {
+      color: #fb923c;
+    }
+
+    .footer-socials {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .footer-social-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 13px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      transition: all var(--transition);
+    }
+
+    a.footer-social-pill:hover {
+      border-color: rgba(249, 115, 22, 0.55);
+      color: #fff;
+      background: rgba(249, 115, 22, 0.14);
+      transform: translateY(-2px);
+    }
+
+    .footer-bottom {
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Modals */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(4, 4, 7, 0.82);
+      backdrop-filter: blur(12px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-dialog {
+      width: 100%;
+      max-width: 640px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #101017;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 24px;
+      padding: 32px;
+      position: relative;
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.7);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-primary);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 1.1rem;
+    }
+
+    /* Reveal Animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .orb, .reveal, .btn, .glass-card {
+        animation: none !important;
+        transition: none !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .hero-grid,
+      .about-grid,
+      .collab-grid,
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+      .services-grid,
+      .portfolio-grid,
+      .social-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .why-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links,
+      .nav-actions .btn {
+        display: none;
+      }
+      .hamburger {
+        display: flex;
+      }
+      .section {
+        padding: 76px 0;
+      }
+      .services-grid,
+      .portfolio-grid,
+      .social-grid,
+      .why-grid,
+      .form-grid,
+      .collab-tags,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+      .collab-box,
+      .form-card,
+      .contact-panel {
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Ambient Background -->
+  <div class="ambient-canvas" aria-hidden="true">
+    <div class="ambient-grid"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="#home" class="brand-logo" aria-label="Naveen Kardam Home">
+        <span class="brand-mark">NK</span>
+        <span>NAVEEN KARDAM</span>
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#work">My Work</a></li>
+          <li><a href="#collaborations">Collaborations</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="#contact" class="btn btn-primary btn-sm">Let's Work Together</a>
+        <button class="hamburger" id="menuToggle" aria-label="Toggle Menu" aria-expanded="false" aria-controls="mobileMenu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <ul>
+        <li><a href="#home" class="mobile-nav-link">Home</a></li>
+        <li><a href="#about" class="mobile-nav-link">About</a></li>
+        <li><a href="#services" class="mobile-nav-link">Services</a></li>
+        <li><a href="#work" class="mobile-nav-link">My Work</a></li>
+        <li><a href="#collaborations" class="mobile-nav-link">Collaborations</a></li>
+        <li><a href="#contact" class="mobile-nav-link">Contact</a></li>
+      </ul>
+      <a href="#contact" class="btn btn-primary mobile-nav-link" style="width:100%;">Let's Work Together</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+      <div class="container hero-grid">
+        <div class="reveal">
+          <div class="hero-tagline-row">
+            <span class="eyebrow"><span class="eyebrow-dot"></span> Create. Innovate. Dominate.</span>
+            <span class="hero-alt-badge">Turning Ideas Into Digital Reality.</span>
+          </div>
+
+          <h1 class="hero-title">
+            HEY, I'M <span class="gradient-text">NAVEEN KARDAM.</span>
+          </h1>
+
+          <p class="hero-roles">
+            Digital Creator | Video Editor | Web &amp; App Developer | Creative Designer
+          </p>
+
+          <p class="hero-desc">
+            I help creators, brands and businesses transform their ideas into powerful digital experiences through creative editing, modern websites, applications and visual designs.
+          </p>
+
+          <div class="hero-cta">
+            <a href="#services" class="btn btn-primary">
+              Explore My Services
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+            <button type="button" class="btn btn-secondary" id="heroCollabBtn">
+              Let's Collaborate
+            </button>
+          </div>
+
+          <div class="hero-meta-strip">
+            <div class="meta-item">
+              <strong>Video &amp; Motion</strong>
+              <span>YouTube, Reels &amp; Cinematics</span>
+            </div>
+            <div class="meta-item">
+              <strong>Web &amp; App Builds</strong>
+              <span>Modern Responsive Experiences</span>
+            </div>
+            <div class="meta-item">
+              <strong>Brand &amp; Visuals</strong>
+              <span>Thumbnails, Design &amp; Content</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="portrait-wrap reveal">
+          <div class="portrait-glow" aria-hidden="true"></div>
+          <div class="portrait-card">
+            <div class="portrait-frame" id="heroPortraitContainer"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="eyebrow"><span class="eyebrow-dot"></span> About Me</span>
+          <h2 class="section-title">Behind The <span class="gradient-text">Brand</span></h2>
+        </div>
+
+        <div class="about-grid">
+          <div class="about-copy reveal">
+            <p>
+              I'm Naveen Kardam, a digital creator and creative enthusiast passionate about technology, design, content creation and building digital experiences.
+            </p>
+            <p>
+              From editing engaging videos to developing websites and applications, I enjoy turning creative ideas into something real.
+            </p>
+            <p>
+              My goal is to combine creativity and technology to deliver meaningful digital work.
+            </p>
+          </div>
+
+          <div class="about-cards reveal">
+            <article class="glass-card highlight-card">
+              <div class="icon-box" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <div>
+                <h3>Creative Mindset</h3>
+                <p>Approaching every video cut, layout, and visual composition with bold storytelling and modern creative direction.</p>
+              </div>
+            </article>
+
+            <article class="glass-card highlight-card">
+              <div class="icon-box" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              </div>
+              <div>
+                <h3>Technology &amp; Innovation</h3>
+                <p>Leveraging modern web frameworks, responsive app workflows, and clean engineering to build fast digital products.</p>
+              </div>
+            </article>
+
+            <article class="glass-card highlight-card">
+              <div class="icon-box" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div>
+                <h3>Digital Excellence</h3>
+                <p>Focused on polish, consistency, and high-impact execution so creators and brands stand out with confidence.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="eyebrow"><span class="eyebrow-dot"></span> What I Offer</span>
+          <h2 class="section-title">Creative &amp; Digital <span class="gradient-text">Services</span></h2>
+          <p class="section-subtitle">
+            End-to-end digital production built for creators, emerging brands, and businesses looking for standout execution.
+          </p>
+        </div>
+
+        <div class="services-grid">
+          <article class="glass-card service-card reveal">
+            <div>
+              <div class="service-head">
+                <span class="service-num">SERVICE 01</span>
+                <div class="icon-box" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+                </div>
+              </div>
+              <h3>VIDEO EDITING</h3>
+              <ul class="service-list">
+                <li>YouTube video editing</li>
+                <li>Instagram Reels editing</li>
+                <li>YouTube Shorts editing</li>
+                <li>Gaming montage editing</li>
+                <li>Cinematic video editing</li>
+                <li>Social media content editing</li>
+                <li>Promotional video editing</li>
+              </ul>
+            </div>
+            <button type="button" class="btn btn-secondary service-cta" data-service="Video Editing">
+              Request Video Editing
+            </button>
+          </article>
+
+          <article class="glass-card service-card reveal">
+            <div>
+              <div class="service-head">
+                <span class="service-num">SERVICE 02</span>
+                <div class="icon-box" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                </div>
+              </div>
+              <h3>WEBSITE DEVELOPMENT</h3>
+              <ul class="service-list">
+                <li>Business websites</li>
+                <li>Portfolio websites</li>
+                <li>Personal brand websites</li>
+                <li>Landing pages</li>
+                <li>Modern responsive websites</li>
+                <li>Website redesign</li>
+              </ul>
+            </div>
+            <button type="button" class="btn btn-secondary service-cta" data-service="Website Development">
+              Build My Website
+            </button>
+          </article>
+
+          <article class="glass-card service-card reveal">
+            <div>
+              <div class="service-head">
+                <span class="service-num">SERVICE 03</span>
+                <div class="icon-box" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                </div>
+              </div>
+              <h3>APP DEVELOPMENT</h3>
+              <ul class="service-list">
+                <li>Android application concepts</li>
+                <li>Business applications</li>
+                <li>Utility applications</li>
+                <li>UI/UX design</li>
+                <li>Custom app projects</li>
+              </ul>
+            </div>
+            <button type="button" class="btn btn-secondary service-cta" data-service="App Development">
+              Discuss App Project
+            </button>
+          </article>
+
+          <article class="glass-card service-card reveal">
+            <div>
+              <div class="service-head">
+                <span class="service-num">SERVICE 04</span>
+                <div class="icon-box" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                </div>
+              </div>
+              <h3>GRAPHIC &amp; PHOTO DESIGN</h3>
+              <ul class="service-list">
+                <li>Professional photo editing</li>
+                <li>Instagram post designs</li>
+                <li>YouTube thumbnails</li>
+                <li>Gaming banners</li>
+                <li>Social media posters</li>
+                <li>Custom image creation</li>
+                <li>Brand graphics</li>
+              </ul>
+            </div>
+            <button type="button" class="btn btn-secondary service-cta" data-service="Graphic Design">
+              Request a Design
+            </button>
+          </article>
+
+          <article class="glass-card service-card reveal">
+            <div>
+              <div class="service-head">
+                <span class="service-num">SERVICE 05</span>
+                <div class="icon-box" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                </div>
+              </div>
+              <h3>CREATIVE CONTENT</h3>
+              <ul class="service-list">
+                <li>Social media content creation</li>
+                <li>Branding ideas</li>
+                <li>Promotional creatives</li>
+                <li>Digital marketing creatives</li>
+                <li>Content design</li>
+              </ul>
+            </div>
+            <button type="button" class="btn btn-secondary service-cta" data-service="Content Creation">
+              Start a Project
+            </button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="work" class="section">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="eyebrow"><span class="eyebrow-dot"></span> Portfolio Showcase</span>
+          <h2 class="section-title">Selected <span class="gradient-text">Creative Work</span></h2>
+          <p class="section-subtitle">
+            Explore concept showcases across video editing, web development, app design, photo retouching, and graphic design.
+          </p>
+        </div>
+
+        <div class="filter-bar reveal" role="tablist" aria-label="Portfolio categories">
+          <button class="filter-btn active" data-filter="All Projects" role="tab" aria-selected="true">All Projects</button>
+          <button class="filter-btn" data-filter="Video Editing" role="tab" aria-selected="false">Video Editing</button>
+          <button class="filter-btn" data-filter="Website Design" role="tab" aria-selected="false">Website Design</button>
+          <button class="filter-btn" data-filter="App Projects" role="tab" aria-selected="false">App Projects</button>
+          <button class="filter-btn" data-filter="Photo Editing" role="tab" aria-selected="false">Photo Editing</button>
+          <button class="filter-btn" data-filter="Graphic Design" role="tab" aria-selected="false">Graphic Design</button>
+        </div>
+
+        <div class="portfolio-grid" id="portfolioGrid"></div>
+
+        <p class="portfolio-note">
+          Note: Displayed items are sample showcase placeholders ready to be replaced with your live thumbnails and links in <code>SITE_CONFIG.projects</code>.
+        </p>
+      </div>
+    </section>
+
+    <!-- Collaboration Section -->
+    <section id="collaborations" class="section">
+      <div class="container">
+        <div class="glass-card collab-box reveal">
+          <div class="collab-grid">
+            <div>
+              <span class="eyebrow"><span class="eyebrow-dot"></span> Partnerships</span>
+              <h2 class="section-title">LET'S CREATE SOMETHING <span class="gradient-text">BIG TOGETHER.</span></h2>
+              <p class="section-subtitle" style="margin-bottom: 28px;">
+                Have a brand, business, creative idea or collaboration opportunity? I'm always interested in exploring exciting projects and meaningful partnerships.
+              </p>
+              <button type="button" class="btn btn-primary" id="openCollabModalBtn">
+                Discuss a Collaboration
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </button>
+            </div>
+
+            <div class="collab-tags">
+              <div class="collab-tag"><span class="dot"></span> Brand Collaborations</div>
+              <div class="collab-tag"><span class="dot"></span> Creator Collaborations</div>
+              <div class="collab-tag"><span class="dot"></span> Paid Promotions</div>
+              <div class="collab-tag"><span class="dot"></span> Social Media Partnerships</div>
+              <div class="collab-tag"><span class="dot"></span> Business Partnerships</div>
+              <div class="collab-tag"><span class="dot"></span> Creative Projects</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Work With Me -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header center reveal">
+          <span class="eyebrow"><span class="eyebrow-dot"></span> The Studio Standard</span>
+          <h2 class="section-title">Why Work <span class="gradient-text">With Me</span></h2>
+        </div>
+
+        <div class="why-grid">
+          <article class="glass-card why-card reveal">
+            <div class="icon-box" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+            </div>
+            <h3>Creative Approach</h3>
+            <p>Original concepts tailored to your audience rather than cookie-cutter templates.</p>
+          </article>
+
+          <article class="glass-card why-card reveal">
+            <div class="icon-box" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+            <h3>Modern Technology</h3>
+            <p>Clean, responsive engineering and up-to-date editing and design workflows.</p>
+          </article>
+
+          <article class="glass-card why-card reveal">
+            <div class="icon-box" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
+            <h3>Attention to Detail</h3>
+            <p>Sharp typography, pacing, spacing, and visual balance across every deliverable.</p>
+          </article>
+
+          <article class="glass-card why-card reveal">
+            <div class="icon-box" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <h3>Professional Communication</h3>
+            <p>Clear project expectations, timely updates, and transparent collaboration from start to finish.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Social Media Hub -->
+    <section id="socials" class="section">
+      <div class="container">
+        <div class="section-header center reveal">
+          <span class="eyebrow"><span class="eyebrow-dot"></span> Connect With Me</span>
+          <h2 class="section-title">FIND ME ON <span class="gradient-text">SOCIALS.</span></h2>
+          <p class="section-subtitle">
+            Follow my official channels for content drops, edits, creative experiments, and creator updates.
+          </p>
+        </div>
+
+        <div class="social-grid reveal" id="socialHubGrid"></div>
+      </div>
+    </section>
+
+    <!-- Project Inquiry & Contact Form -->
+    <section id="contact" class="section">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="eyebrow"><span class="eyebrow-dot"></span> Start A Project</span>
+          <h2 class="section-title">Project Inquiry &amp; <span class="gradient-text">Contact</span></h2>
+          <p class="section-subtitle">
+            Book your project or send an inquiry below — all requests are saved directly to the studio database.
+          </p>
+        </div>
+
+        <div class="contact-grid">
+          <aside class="glass-card contact-panel reveal">
+            <div>
+              <h3 style="font-family: var(--font-display); font-size: 1.35rem; margin-bottom: 10px;">Direct Business Contact</h3>
+              <p style="color: var(--text-secondary); font-size: 0.94rem;">
+                Prefer direct email for proposals, press kits, or quick questions? Send a message anytime.
+              </p>
+            </div>
+
+            <div class="direct-email-box">
+              <label>Business Email</label>
+              <a href="mailto:lal398501@gmail.com" class="email-link">lal398501@gmail.com</a>
+              <div class="email-actions">
+                <a href="mailto:lal398501@gmail.com?subject=Project%20Inquiry%20%E2%80%94%20NAVEEN%20KARDAM%20Studio" class="btn btn-primary btn-sm">Email Directly</a>
+                <button type="button" class="btn btn-secondary btn-sm" id="copyEmailBtn">Copy Email</button>
+              </div>
+            </div>
+
+            <div style="font-size: 0.88rem; color: var(--text-secondary); display: grid; gap: 8px;">
+              <div><strong style="color: var(--text-primary);">Studio Identity:</strong> NAVEEN KARDAM</div>
+              <div><strong style="color: var(--text-primary);">Services:</strong> Video Editing, Web &amp; App Dev, Design, Content</div>
+              <div><strong style="color: var(--text-primary);">Official Channels:</strong> YouTube &amp; Instagram linked above</div>
+            </div>
+          </aside>
+
+          <div class="glass-card form-card reveal">
+            <form id="inquiryForm" novalidate>
+              <!-- Honeypot anti-spam field -->
+              <div class="sr-only" aria-hidden="true">
+                <label for="website_url">Leave this field blank</label>
+                <input type="text" id="website_url" name="website_url" tabindex="-1" autocomplete="off" />
+              </div>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="fullName">Full Name *</label>
+                  <input class="form-control" type="text" id="fullName" name="fullName" placeholder="Your full name" required maxlength="100" />
+                </div>
+
+                <div class="form-group">
+                  <label for="email">Email Address *</label>
+                  <input class="form-control" type="email" id="email" name="email" placeholder="you@example.com" required maxlength="150" />
+                </div>
+
+                <div class="form-group">
+                  <label for="socialUsername">Social Media Username (optional)</label>
+                  <input class="form-control" type="text" id="socialUsername" name="socialUsername" placeholder="@username or channel" maxlength="100" />
+                </div>
+
+                <div class="form-group">
+                  <label for="serviceRequired">Service Required *</label>
+                  <select class="form-control" id="serviceRequired" name="serviceRequired" required>
+                    <option value="">Select a service...</option>
+                    <option value="Video Editing">Video Editing</option>
+                    <option value="Website Development">Website Development</option>
+                    <option value="App Development">App Development</option>
+                    <option value="Photo Editing">Photo Editing</option>
+                    <option value="Graphic Design">Graphic Design</option>
+                    <option value="Content Creation">Content Creation</option>
+                    <option value="Collaboration">Collaboration</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <div class="form-group full">
+                  <label for="projectBudget">Project Budget (optional)</label>
+                  <input class="form-control" type="text" id="projectBudget" name="projectBudget" placeholder="e.g. Flexible / Custom Quote / INR or USD range" maxlength="80" />
+                </div>
+
+                <div class="form-group full">
+                  <label for="projectDescription">Project Description *</label>
+                  <textarea class="form-control" id="projectDescription" name="projectDescription" placeholder="Tell me about your goals, timeline, style references, or collaboration idea..." required minlength="15" maxlength="2000"></textarea>
+                </div>
+              </div>
+
+              <div style="margin-top: 22px;">
+                <button type="submit" class="btn btn-primary" id="submitInquiryBtn" style="width: 100%;">
+                  Submit Project Request
+                </button>
+              </div>
+
+              <div id="inquiryStatus" class="form-status" role="status" aria-live="polite"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="#home" class="brand-logo">
+            <span class="brand-mark">NK</span>
+            <span>NAVEEN KARDAM</span>
+          </a>
+          <p class="footer-tagline">
+            "More Than A Name. A Creative Identity."
+          </p>
+          <div class="footer-socials" id="footerSocials"></div>
+        </div>
+
+        <div>
+          <h3 class="footer-heading">Navigation</h3>
+          <ul class="footer-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#work">Portfolio</a></li>
+            <li><a href="#collaborations">Collaborations</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><button type="button" id="openPrivacyBtn">Privacy Policy</button></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer-heading">Business Email</h3>
+          <ul class="footer-links">
+            <li><a href="mailto:lal398501@gmail.com">lal398501@gmail.com</a></li>
+          </ul>
+          <p style="margin-top: 14px; font-size: 0.86rem; color: var(--text-muted);">
+            Create. Innovate. Dominate.
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 NAVEEN KARDAM. All Rights Reserved.</span>
+        <span>Created by: NAVEEN KARDAM.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Project Preview Modal -->
+  <div class="modal-backdrop" id="projectModal" role="dialog" aria-modal="true" aria-labelledby="projectModalTitle">
+    <div class="modal-dialog">
+      <button type="button" class="modal-close" data-close-modal="projectModal" aria-label="Close modal">&times;</button>
+      <span class="eyebrow" id="projectModalCategory" style="margin-bottom: 12px;"></span>
+      <h2 id="projectModalTitle" style="font-family: var(--font-display); font-size: 1.6rem; margin-bottom: 14px;"></h2>
+      <div id="projectModalMedia" style="border-radius: 14px; overflow: hidden; margin-bottom: 18px; border: 1px solid var(--border-subtle);"></div>
+      <p id="projectModalDesc" style="color: var(--text-secondary); margin-bottom: 20px; line-height: 1.7;"></p>
+      <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+        <button type="button" class="btn btn-primary" id="projectModalRequestBtn">Request Similar Project</button>
+        <button type="button" class="btn btn-secondary" data-close-modal="projectModal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Collaboration Inquiry Modal -->
+  <div class="modal-backdrop" id="collabModal" role="dialog" aria-modal="true" aria-labelledby="collabModalTitle">
+    <div class="modal-dialog">
+      <button type="button" class="modal-close" data-close-modal="collabModal" aria-label="Close collaboration modal">&times;</button>
+      <span class="eyebrow"><span class="eyebrow-dot"></span> Partnerships</span>
+      <h2 id="collabModalTitle" style="font-family: var(--font-display); font-size: 1.55rem; margin-bottom: 8px;">Discuss a Collaboration</h2>
+      <p style="color: var(--text-secondary); font-size: 0.92rem; margin-bottom: 20px;">
+        Select your collaboration category and share your idea. All submissions are saved to the studio database.
+      </p>
+
+      <form id="collabForm" novalidate>
+        <div class="sr-only" aria-hidden="true">
+          <input type="text" name="collab_trap" tabindex="-1" autocomplete="off" />
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="collabName">Full Name *</label>
+            <input class="form-control" type="text" id="collabName" required placeholder="Your name or brand" />
+          </div>
+          <div class="form-group">
+            <label for="collabEmail">Email Address *</label>
+            <input class="form-control" type="email" id="collabEmail" required placeholder="you@example.com" />
+          </div>
+          <div class="form-group">
+            <label for="collabType">Collaboration Category *</label>
+            <select class="form-control" id="collabType" required>
+              <option value="Brand Collaborations">Brand Collaborations</option>
+              <option value="Creator Collaborations">Creator Collaborations</option>
+              <option value="Paid Promotions">Paid Promotions</option>
+              <option value="Social Media Partnerships">Social Media Partnerships</option>
+              <option value="Business Partnerships">Business Partnerships</option>
+              <option value="Creative Projects">Creative Projects</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="collabHandle">Social Handle / Channel (optional)</label>
+            <input class="form-control" type="text" id="collabHandle" placeholder="@handle" />
+          </div>
+          <div class="form-group full">
+            <label for="collabDetails">Collaboration Proposal *</label>
+            <textarea class="form-control" id="collabDetails" required minlength="15" placeholder="Describe the partnership idea, deliverables, and timeline..."></textarea>
+          </div>
+        </div>
+        <div style="margin-top: 20px;">
+          <button type="submit" class="btn btn-primary" id="submitCollabBtn" style="width: 100%;">Submit Collaboration Inquiry</button>
+        </div>
+        <div id="collabStatus" class="form-status" role="status" aria-live="polite"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Privacy Policy Modal -->
+  <div class="modal-backdrop" id="privacyModal" role="dialog" aria-modal="true" aria-labelledby="privacyModalTitle">
+    <div class="modal-dialog">
+      <button type="button" class="modal-close" data-close-modal="privacyModal" aria-label="Close privacy policy">&times;</button>
+      <h2 id="privacyModalTitle" style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 14px;">Privacy Policy</h2>
+      <div style="color: var(--text-secondary); font-size: 0.92rem; display: grid; gap: 12px; line-height: 1.7;">
+        <p>
+          <strong>NAVEEN KARDAM — Official Creative Studio</strong> respects your privacy. Information submitted through the project inquiry or collaboration forms (name, email, social media username, project details) is stored securely and used solely to respond to your inquiry and discuss potential creative work.
+        </p>
+        <p>
+          We do not sell, rent, or trade personal contact details with third parties. Direct inquiries can also be sent to <strong>lal398501@gmail.com</strong>.
+        </p>
+        <p>
+          External links to platforms such as YouTube and Instagram are governed by the respective privacy policies of those platforms.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /**
+     * =========================================================================
+     * CENTRALIZED STUDIO CONFIGURATION
+     * =========================================================================
+     */
+    const SITE_CONFIG = {
+      businessEmail: 'lal398501@gmail.com',
+
+      hero: {
+        // Add your own portrait image path or URL here, e.g., './assets/naveen-portrait.jpg'
+        portraitUrl: '',
+        portraitAlt: 'Naveen Kardam — Digital Creator & Creative Studio Founder'
+      },
+
+      // Connected to your Supabase Project (ahkxxnsrvytywyutxqyc)
+      supabase: {
+        url: 'https://ahkxxnsrvytywyutxqyc.supabase.co',
+        publishableKey: 'sb_publishable_PXn0W5KB-R4QJEEPAiDF-Q_J-Z9nujZ',
+        table: 'project_inquiries'
+      },
+
+      // Official Social Links & Editable Placeholders
+      socials: [
+        {
+          id: 'youtube',
+          platform: 'YouTube',
+          label: 'NAVEEN FREEFIRE93',
+          handle: '@naveen_freefire93',
+          url: 'https://youtube.com/@naveen_freefire93?si=Z0yIOkFj0u_zkeCk',
+          status: 'active',
+          badge: 'Official Channel',
+          showInFooter: true
+        },
+        {
+          id: 'instagram-main',
+          platform: 'Instagram',
+          label: 'Instagram',
+          handle: '@im_izzuy',
+          url: 'https://www.instagram.com/im_izzuy?jplx=MWxkb3JhbHhyMnB1eA==',
+          status: 'active',
+          badge: 'Official Profile',
+          showInFooter: true
+        },
+        {
+          id: 'instagram-creator',
+          platform: 'Instagram / Creator',
+          label: 'Creator Handle',
+          handle: '@nyx_plays',
+          url: '',
+          status: 'editable',
+          badge: 'Handle Listed',
+          showInFooter: false
+        },
+        {
+          id: 'facebook',
+          platform: 'Facebook',
+          label: 'Facebook Page',
+          handle: 'New Page Coming Soon',
+          url: '',
+          status: 'coming_soon',
+          badge: 'Coming Soon',
+          showInFooter: true
+        },
+        {
+          id: 'whatsapp',
+          platform: 'WhatsApp',
+          label: 'WhatsApp Business',
+          handle: 'Add link in SITE_CONFIG',
+          url: '',
+          status: 'editable',
+          badge: 'Placeholder',
+          showInFooter: false
+        },
+        {
+          id: 'other',
+          platform: 'More Platforms',
+          label: 'Other Socials',
+          handle: 'Editable Slot (X / Discord / LinkedIn)',
+          url: '',
+          status: 'editable',
+          badge: 'Editable',
+          showInFooter: false
+        }
+      ],
+
+      projects: [
+        {
+          id: 'proj-video-01',
+          title: 'High-Retention YouTube Edit Concept',
+          category: 'Video Editing',
+          serviceKey: 'Video Editing',
+          thumbnailUrl: '',
+          shortDesc: 'Sample showcase format: rhythmic pacing, motion callouts, sound design, and cinematic color grading.',
+          fullDesc: 'Sample showcase concept demonstrating dynamic cuts, kinetic typography, SFX layering, and retention-driven pacing tailored for YouTube videos, Shorts, and Reels.'
+        },
+        {
+          id: 'proj-web-01',
+          title: 'Modern Brand Landing Experience',
+          category: 'Website Design',
+          serviceKey: 'Website Development',
+          thumbnailUrl: '',
+          shortDesc: 'Sample showcase format: responsive dark-mode architecture with clean visual hierarchy and smooth motion.',
+          fullDesc: 'Sample showcase concept illustrating a conversion-focused personal brand or business website engineered for speed, mobile responsiveness, and modern glassmorphic aesthetics.'
+        },
+        {
+          id: 'proj-app-01',
+          title: 'Creator Utility Mobile App UI',
+          category: 'App Projects',
+          serviceKey: 'App Development',
+          thumbnailUrl: '',
+          shortDesc: 'Sample showcase format: intuitive Android app concept with clean navigation and structured user flows.',
+          fullDesc: 'Sample showcase concept highlighting UI/UX wireframing, clean dark interface components, and practical utility architecture for Android and custom business apps.'
+        },
+        {
+          id: 'proj-photo-01',
+          title: 'Editorial Portrait Retouch & Grade',
+          category: 'Photo Editing',
+          serviceKey: 'Photo Editing',
+          thumbnailUrl: '',
+          shortDesc: 'Sample showcase format: balanced skin retouching, moody contrast, and rich cinematic color tones.',
+          fullDesc: 'Sample showcase concept demonstrating non-destructive lighting correction, atmospheric color grading, and crisp detail enhancement for creator portraits and campaigns.'
+        },
+        {
+          id: 'proj-graphic-01',
+          title: 'High-CTR Thumbnail & Poster Pack',
+          category: 'Graphic Design',
+          serviceKey: 'Graphic Design',
+          thumbnailUrl: '',
+          shortDesc: 'Sample showcase format: bold composition, lighting depth, and focal typography built to drive clicks.',
+          fullDesc: 'Sample showcase concept featuring YouTube thumbnails, gaming banners, and promotional social posters crafted for strong visual contrast on mobile and desktop feeds.'
+        },
+        {
+          id: 'proj-video-02',
+          title: 'Gaming Montage & Reels Cut',
+          category: 'Video Editing',
+          serviceKey: 'Video Editing',
+          thumbnailUrl: '',
+          shortDesc: 'Sample showcase format: beat-synced transitions, velocity curves, and crisp visual effects.',
+          fullDesc: 'Sample showcase concept combining beat-matched velocity edits, subtle camera shakes, and clean HUD framing for gaming montages and short-form social reels.'
+        }
+      ]
+    };
+
+    /* =========================================================================
+       SVG Platform Icons
+       ========================================================================= */
+    function getPlatformIcon(id) {
+      const icons = {
+        youtube: `<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`,
+        'instagram-main': `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>`,
+        'instagram-creator': `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>`,
+        facebook: `<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.675 0H1.325C.593 0 0 .593 0 1.325v21.351C0 23.407.593 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.73 0 1.323-.593 1.323-1.325V1.325C24 .593 23.407 0 22.675 0z"/></svg>`,
+        whatsapp: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>`,
+        other: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`
+      };
+      return icons[id] || icons.other;
+    }
+
+    /* =========================================================================
+       Render Hero Portrait
+       ========================================================================= */
+    function renderHeroPortrait() {
+      const container = document.getElementById('heroPortraitContainer');
+      if (SITE_CONFIG.hero.portraitUrl) {
+        container.innerHTML = `
+          <img src="${SITE_CONFIG.hero.portraitUrl}" alt="${SITE_CONFIG.hero.portraitAlt}" />
+          <div class="portrait-floating-badge">
+            <div>
+              <strong>NAVEEN KARDAM</strong>
+              <span>Creative Studio</span>
+            </div>
+            <span class="status-pill">&#9679; Open for Projects</span>
+          </div>
+        `;
+      } else {
+        container.innerHTML = `
+          <div class="portrait-placeholder">
+            <div class="portrait-monogram">NK</div>
+            <h3>CREATOR PORTRAIT</h3>
+            <p>Replace with your photograph by setting <code>hero.portraitUrl</code> in <code>SITE_CONFIG</code>.</p>
+          </div>
+          <div class="portrait-floating-badge">
+            <div>
+              <strong>NAVEEN KARDAM</strong>
+              <span>Create. Innovate. Dominate.</span>
+            </div>
+            <span class="status-pill">&#9679; Studio Ready</span>
+          </div>
+        `;
+      }
+    }
+
+    /* =========================================================================
+       Render Portfolio & Filters
+       ========================================================================= */
+    let activeCategory = 'All Projects';
+
+    function renderPortfolio(category = 'All Projects') {
+      const grid = document.getElementById('portfolioGrid');
+      const items = category === 'All Projects'
+        ? SITE_CONFIG.projects
+        : SITE_CONFIG.projects.filter(p => p.category === category);
+
+      grid.innerHTML = items.map(project => `
+        <article class="glass-card project-card">
+          <div class="project-thumb">
+            ${project.thumbnailUrl
+              ? `<img src="${project.thumbnailUrl}" alt="${project.title}" loading="lazy" />`
+              : `<div class="thumb-placeholder">
+                  <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  <span style="font-size: 0.8rem; color: var(--text-secondary);">Sample Placeholder Thumbnail</span>
+                </div>`
+            }
+            <span class="thumb-badge">${project.category}</span>
+          </div>
+          <div class="project-body">
+            <div>
+              <div class="project-cat">${project.category}</div>
+              <h3>${project.title}</h3>
+              <p>${project.shortDesc}</p>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm view-project-btn" data-project-id="${project.id}">
+              View Project
+            </button>
+          </div>
+        </article>
+      `).join('');
+
+      grid.querySelectorAll('.view-project-btn').forEach(btn => {
+        btn.addEventListener('click', () => openProjectModal(btn.dataset.projectId));
+      });
+    }
+
+    /* =========================================================================
+       Render Social Media Hub & Footer Socials
+       ========================================================================= */
+    function renderSocials() {
+      const hub = document.getElementById('socialHubGrid');
+      const footerSocials = document.getElementById('footerSocials');
+
+      hub.innerHTML = SITE_CONFIG.socials.map(item => {
+        const hasUrl = Boolean(item.url && item.url.trim() !== '');
+        const badgeClass = item.status === 'coming_soon' ? 'social-badge soon' : 'social-badge';
+        const inner = `
+          <div class="social-left">
+            <div class="social-icon">${getPlatformIcon(item.id)}</div>
+            <div class="social-info">
+              <h3>${item.label}</h3>
+              <div class="social-handle">${item.handle}</div>
+            </div>
+          </div>
+          <span class="${badgeClass}">
+            ${hasUrl ? 'Visit &rarr;' : item.badge}
+          </span>
+        `;
+
+        if (hasUrl) {
+          return `<a href="${item.url}" target="_blank" rel="noopener noreferrer" class="glass-card social-card is-link" aria-label="${item.platform} — ${item.handle} (opens in new tab)">${inner}</a>`;
+        }
+        return `<div class="glass-card social-card is-placeholder" aria-label="${item.platform} — ${item.badge}">${inner}</div>`;
+      }).join('');
+
+      footerSocials.innerHTML = SITE_CONFIG.socials
+        .filter(s => s.showInFooter)
+        .map(item => {
+          const hasUrl = Boolean(item.url && item.url.trim() !== '');
+          if (hasUrl) {
+            return `
+              <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="footer-social-pill" aria-label="${item.platform} (${item.handle})">
+                ${getPlatformIcon(item.id)}
+                <span>${item.platform}: ${item.handle}</span>
+              </a>
+            `;
+          }
+          return `
+            <span class="footer-social-pill" title="Coming Soon — Edit in SITE_CONFIG.socials">
+              ${getPlatformIcon(item.id)}
+              <span>${item.platform}: ${item.badge}</span>
+            </span>
+          `;
+        }).join('');
+    }
+
+    /* =========================================================================
+       Modals & Pre-fill Helpers
+       ========================================================================= */
+    function openModal(modalId) {
+      const el = document.getElementById(modalId);
+      el.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(modalId) {
+      const el = document.getElementById(modalId);
+      el.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function openProjectModal(projectId) {
+      const project = SITE_CONFIG.projects.find(p => p.id === projectId);
+      if (!project) return;
+      document.getElementById('projectModalCategory').textContent = project.category;
+      document.getElementById('projectModalTitle').textContent = project.title;
+      document.getElementById('projectModalDesc').textContent = project.fullDesc;
+
+      const media = document.getElementById('projectModalMedia');
+      media.innerHTML = project.thumbnailUrl
+        ? `<img src="${project.thumbnailUrl}" alt="${project.title}" style="width:100%; max-height:300px; object-fit:cover;" />`
+        : `<div class="thumb-placeholder" style="height:200px;"><span style="color:var(--text-secondary); font-size:0.9rem;">Sample Showcase Preview — Add real thumbnail URL in <code>SITE_CONFIG.projects</code></span></div>`;
+
+      const reqBtn = document.getElementById('projectModalRequestBtn');
+      reqBtn.onclick = () => {
+        closeModal('projectModal');
+        jumpToInquiryWithService(project.serviceKey);
+      };
+
+      openModal('projectModal');
+    }
+
+    function jumpToInquiryWithService(serviceName) {
+      const select = document.getElementById('serviceRequired');
+      if (select) {
+        select.value = serviceName;
+      }
+      document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => document.getElementById('fullName').focus(), 450);
+    }
+
+    /* =========================================================================
+       Supabase SDK Submission + Honest Error Handling
+       ========================================================================= */
+    let lastSubmitTime = 0;
+    let supabaseClient = null;
+
+    function getSupabaseClient() {
+      if (supabaseClient) return supabaseClient;
+      const key = SITE_CONFIG.supabase.publishableKey || SITE_CONFIG.supabase.anonKey;
+      if (
+        window.supabase &&
+        SITE_CONFIG.supabase.url &&
+        SITE_CONFIG.supabase.url.startsWith('https://') &&
+        key
+      ) {
+        supabaseClient = window.supabase.createClient(SITE_CONFIG.supabase.url, key);
+      }
+      return supabaseClient;
+    }
+
+    function buildMailtoHref(payload) {
+      const subject = encodeURIComponent(`[Studio Inquiry] ${payload.service_required} — ${payload.full_name}`);
+      const body = encodeURIComponent(
+        `Full Name: ${payload.full_name}\n` +
+        `Email: ${payload.email}\n` +
+        `Social Username: ${payload.social_username || 'Not provided'}\n` +
+        `Service / Category: ${payload.service_required}\n` +
+        `Budget: ${payload.project_budget || 'Not specified'}\n\n` +
+        `Project Description:\n${payload.project_description}`
+      );
+      return `mailto:${SITE_CONFIG.businessEmail}?subject=${subject}&body=${body}`;
+    }
+
+    async function submitInquiryPayload(payload, statusEl, submitBtn, formEl) {
+      statusEl.className = 'form-status';
+      statusEl.innerHTML = '';
+
+      // Basic rate-limit spam protection (10 seconds between submissions)
+      const now = Date.now();
+      if (now - lastSubmitTime < 10000) {
+        statusEl.className = 'form-status error show';
+        statusEl.textContent = 'Please wait a few seconds before submitting another request.';
+        return;
+      }
+
+      const client = getSupabaseClient();
+      if (!client) {
+        const mailtoHref = buildMailtoHref(payload);
+        statusEl.className = 'form-status warning show';
+        statusEl.innerHTML = `
+          <strong>Unable to initialize the database client.</strong> Please check your internet connection (Supabase SDK could not load) or send your booking directly via email:
+          <div class="fallback-actions">
+            <a href="${mailtoHref}" class="btn btn-primary btn-sm">Send via Email App</a>
+          </div>
+        `;
+        return;
+      }
+
+      const originalText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Saving Project Request...';
+
+      try {
+        const { error } = await client
+          .from(SITE_CONFIG.supabase.table)
+          .insert([payload]);
+
+        if (error) throw error;
+
+        lastSubmitTime = Date.now();
+        formEl.reset();
+        statusEl.className = 'form-status success show';
+        statusEl.innerHTML = `
+          <strong>Project request received!</strong> Thank you for reaching out. Your booking details have been securely saved and I will respond via email soon.
+        `;
+      } catch (err) {
+        console.error('Supabase insert error:', err);
+        const mailtoHref = buildMailtoHref(payload);
+        statusEl.className = 'form-status error show';
+        statusEl.innerHTML = `
+          <strong>Could not save your booking to the database.</strong> (${err.message || 'Check that the project_inquiries table & insert policy have been created in Supabase.'})
+          <br />You can still send your inquiry directly via email:
+          <div class="fallback-actions">
+            <a href="${mailtoHref}" class="btn btn-secondary btn-sm">Send via Email (${SITE_CONFIG.businessEmail})</a>
+          </div>
+        `;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      }
+    }
+
+    /* =========================================================================
+       Initialization & Event Listeners
+       ========================================================================= */
+    document.addEventListener('DOMContentLoaded', () => {
+      renderHeroPortrait();
+      renderPortfolio('All Projects');
+      renderSocials();
+
+      // Mobile Navigation Toggle
+      const menuToggle = document.getElementById('menuToggle');
+      const mobileMenu = document.getElementById('mobileMenu');
+      menuToggle.addEventListener('click', () => {
+        const isOpen = mobileMenu.classList.toggle('open');
+        menuToggle.setAttribute('aria-expanded', String(isOpen));
+        mobileMenu.setAttribute('aria-hidden', String(!isOpen));
+      });
+      document.querySelectorAll('.mobile-nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.remove('open');
+          menuToggle.setAttribute('aria-expanded', 'false');
+          mobileMenu.setAttribute('aria-hidden', 'true');
+        });
+      });
+
+      // Service CTA Buttons -> Pre-fill & Scroll to Form
+      document.querySelectorAll('.service-cta').forEach(btn => {
+        btn.addEventListener('click', () => jumpToInquiryWithService(btn.dataset.service));
+      });
+
+      // Portfolio Filter Tabs
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-btn').forEach(b => {
+            b.classList.remove('active');
+            b.setAttribute('aria-selected', 'false');
+          });
+          btn.classList.add('active');
+          btn.setAttribute('aria-selected', 'true');
+          activeCategory = btn.dataset.filter;
+          renderPortfolio(activeCategory);
+        });
+      });
+
+      // Collaboration Modal Triggers
+      document.getElementById('openCollabModalBtn').addEventListener('click', () => openModal('collabModal'));
+      document.getElementById('heroCollabBtn').addEventListener('click', () => openModal('collabModal'));
+      document.getElementById('openPrivacyBtn').addEventListener('click', () => openModal('privacyModal'));
+
+      // Close Modals
+      document.querySelectorAll('[data-close-modal]').forEach(btn => {
+        btn.addEventListener('click', () => closeModal(btn.dataset.closeModal));
+      });
+      document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+        backdrop.addEventListener('click', e => {
+          if (e.target === backdrop) closeModal(backdrop.id);
+        });
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+          document.querySelectorAll('.modal-backdrop.open').forEach(m => closeModal(m.id));
+        }
+      });
+
+      // Copy Email Button
+      document.getElementById('copyEmailBtn').addEventListener('click', async function () {
+        try {
+          await navigator.clipboard.writeText(SITE_CONFIG.businessEmail);
+          this.textContent = 'Copied!';
+          setTimeout(() => { this.textContent = 'Copy Email'; }, 2000);
+        } catch {
+          window.location.href = `mailto:${SITE_CONFIG.businessEmail}`;
+        }
+      });
+
+      // Main Project Inquiry Form Submission
+      const inquiryForm = document.getElementById('inquiryForm');
+      inquiryForm.addEventListener('submit', async e => {
+        e.preventDefault();
+        const statusEl = document.getElementById('inquiryStatus');
+
+        // Honeypot check
+        if (inquiryForm.website_url.value.trim() !== '') return;
+
+        const fullName = inquiryForm.fullName.value.trim();
+        const email = inquiryForm.email.value.trim();
+        const socialUsername = inquiryForm.socialUsername.value.trim();
+        const serviceRequired = inquiryForm.serviceRequired.value.trim();
+        const projectBudget = inquiryForm.projectBudget.value.trim();
+        const projectDescription = inquiryForm.projectDescription.value.trim();
+
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!fullName || !emailPattern.test(email) || !serviceRequired || projectDescription.length < 15) {
+          statusEl.className = 'form-status error show';
+          statusEl.textContent = 'Please complete all required fields with a valid email and at least 15 characters in your project description.';
+          return;
+        }
+
+        await submitInquiryPayload(
+          {
+            full_name: fullName,
+            email: email,
+            social_username: socialUsername || null,
+            service_required: serviceRequired,
+            project_budget: projectBudget || null,
+            project_description: projectDescription,
+            inquiry_type: 'project'
+          },
+          statusEl,
+          document.getElementById('submitInquiryBtn'),
+          inquiryForm
+        );
+      });
+
+      // Collaboration Modal Form Submission
+      const collabForm = document.getElementById('collabForm');
+      collabForm.addEventListener('submit', async e => {
+        e.preventDefault();
+        const statusEl = document.getElementById('collabStatus');
+
+        if (collabForm.collab_trap.value.trim() !== '') return;
+
+        const fullName = document.getElementById('collabName').value.trim();
+        const email = document.getElementById('collabEmail').value.trim();
+        const collabType = document.getElementById('collabType').value.trim();
+        const handle = document.getElementById('collabHandle').value.trim();
+        const details = document.getElementById('collabDetails').value.trim();
+
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!fullName || !emailPattern.test(email) || details.length < 15) {
+          statusEl.className = 'form-status error show';
+          statusEl.textContent = 'Please provide your name, a valid email address, and at least 15 characters describing your collaboration.';
+          return;
+        }
+
+        await submitInquiryPayload(
+          {
+            full_name: fullName,
+            email: email,
+            social_username: handle || null,
+            service_required: `Collaboration — ${collabType}`,
+            project_budget: null,
+            project_description: details,
+            inquiry_type: 'collaboration'
+          },
+          statusEl,
+          document.getElementById('submitCollabBtn'),
+          collabForm
+        );
+      });
+
+      // Scroll Reveal Animations
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    });
+  </script>
+</body>
+</html>
